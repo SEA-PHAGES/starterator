@@ -247,14 +247,14 @@ def graph_start_sites(args, pham, file_path):
         final_graph_path = os.path.join(file_path, "Pham%sGraph_.pdf" % (pham.pham_no)) if not args.phage else os.path.join(file_path, "%sPham%sGraph_.pdf" % (args.phage+args.one_or_all, pham.pham_no))        
         # graph_path_svg = "%sPham%sGraph.svg" % (file_path+args.phage+ args.one_or_all, pham.pham_no)
         graph_path = os.path.join(file_path, "Pham%sGraph_.pdf" % (pham.pham_no)) if not args.phage else  os.path.join(file_path,"%sPham%sGraph_.pdf" % (args.phage, pham.pham_no))
-        print graph_path
+        print "making_files.graph_start_sites: path to graph is " + str(graph_path)
         if check_file(final_graph_path):
             pass
         else:
             gd_diagram = GenomeDiagram.Diagram(pham.pham_no)
             i = 0
             for gene_group in genes:
-                print 'group', i
+                print 'making_files.graph_start_sites: adding group ' + str(i)
                 make_gene_track(gd_diagram, pham, gene_group, i, len(genes))
                 i += 1
             gd_diagram.draw(format="linear", orientation="portrait", pagesize=reportlab.lib.pagesizes.letter,
@@ -387,15 +387,18 @@ def make_suggested_starts(phage_genes, phage_name, file_path):
         {Gene Name} is a member of Pham {Number}: {Suggested Start Coordinates}
     """
     file_name = os.path.join(file_path, "%sSuggestedStarts.pdf" % (phage_name))
+    text_file_name = os.path.join(file_path, "%sSuggestedStarts.txt" % (phage_name))
     if check_file(file_name):
         return
     doc = SimpleDocTemplate(file_name, pagesize=reportlab.lib.pagesizes.letter)
     story = []
+    just_text = []
     print "making suggested starts page"
     styles = getSampleStyleSheet()
     styles.add(ParagraphStyle(name="paragraph"))
     styles.add(ParagraphStyle(name='Center', alignment=TA_CENTER))
     text = '<font size=14> Suggested Start Coordinates</font>'
+    just_text.append(' Suggested Start Coordinates')
     story.append(Paragraph(text, styles['Center']))
     story.append(Spacer(1, 12))
     for gene_id in sorted(phage_genes.iterkeys()):
@@ -405,10 +408,17 @@ def make_suggested_starts(phage_genes, phage_name, file_path):
         suggested_start = phage_gene["suggested_start"]
         if pham == None:
             text = '<font size=12> %s is not a member of an existing Pham </font>' % (gene.gene_id)
+            simple_text = '%s is not a member of an existing Pham ' % (gene.gene_id)
         else:
             text = '<font size=12> %s is a member of Pham %s:  %s </font>' % (gene.gene_id, pham, suggested_start)
+            simple_text = '%s is a member of Pham %s:  %s ' % (gene.gene_id, pham, suggested_start)
         story.append(Paragraph(text, styles['Normal']))
+        just_text.append(simple_text)
     doc.build(story)
+    print "writing text file"
+    with open(text_file_name, 'w' ) as outfile:
+        outfile.write("\n".join(just_text))
+
 
 def make_fasta_file(genes, fasta_file):
     count = SeqIO.write(genes, fasta_file, 'fasta')
@@ -416,9 +426,9 @@ def make_fasta_file(genes, fasta_file):
 
 def main():
     args = parse_arguments()
-    print "hi from making files main() ", args.make
+    print "making_files:main(); args.make is ", args.make
     if 'graph' in args.make:
-        print args.pickle_file
+        print "making_files.main() make 'graph': args.pickle_file " + args.pickle_file
         pham = cPickle.load(open(args.pickle_file.strip('"'), 'rb'))
         graph_start_sites(args, pham, args.dir)
 
@@ -433,12 +443,12 @@ def main():
         make_suggested_starts(phage, args.phage, args.dir)
 
     if 'text' in args.make:
-        print "Load pickle file " + str(args.pickle_file)
+        print "making_files.main(): Loading pickle file " + str(args.pickle_file)
         pham = cPickle.load(open(args.pickle_file.strip('"'), 'rb'))
         graph_start_sites(args, pham, args.dir)
-        print "phage", args.phage
+        print "making_files.main(): 'text' phage is ", args.phage
         if not args.phage:
-            print "hello no phage"
+            print "making_files.main() 'text': no phage"
             make_pham_text(args, pham, args.pham_no, args.dir, only_pham=True)
         else:
             make_pham_text(args, pham, args.pham_no, args.dir)
