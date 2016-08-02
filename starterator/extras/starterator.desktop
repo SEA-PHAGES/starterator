@@ -2,8 +2,8 @@
 Encoding = UTF-8
 Name = Starterator
 Name[en_US] = Starterator
-Exec = python /Users/marissa/code/Research/starterator.dev/starterator/Starterator
-Icon = /Users/marissa/.starterator/starterator.svg
+Exec = /home/seafaculty/Applications/Starterator/starterator/starterator.sh
+Icon = /home/seafaculty/.starterator/starterator.svg
 Icon[en_US] = /home/pbi/.starterator/starterator.svg
 Type = Application
 Terminal = False
