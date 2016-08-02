@@ -110,9 +110,13 @@ def find_upstream_stop_site(start, stop, orientation, phage_sequence):
         ahead_of_start += 99
         if orientation == 'R':
             if start + ahead_of_start > len(phage_sequence):     #i.e. hit end of phage while looking for stop
+<<<<<<< HEAD
                 ahead_of_start = len(phage_sequence) - start   # start is zero based counting
+=======
+                ahead_of_start = len(phage_sequence) - start -1  # start is zero based counting
+>>>>>>> beta
                 ahead_of_start = ahead_of_start - ahead_of_start % 3
-                sequence = Seq(phage_sequence[stop:(start+ahead_of_start)],
+                sequence = Seq(phage_sequence[stop:(start+ahead_of_start+1)],
                                IUPAC.unambiguous_dna)
                 sequence = sequence.reverse_complement()
                 return sequence, ahead_of_start
@@ -339,7 +343,11 @@ class PhamGene(Gene):
             starts of the genes are the same, and if the alignment gaps or not are the same
             (This is essentially, they would look the same on the graph output)
 
+<<<<<<< HEAD
             TODO currenly only "is_equal" if the start coordinate is the identical base coordinate
+=======
+            TODO currently only "is_equal" if the start coordinate is the identical base coordinate
+>>>>>>> beta
             would make sense to compare the annotated start index
         """
         if self.alignment_start_site != other.alignment_start_site:
