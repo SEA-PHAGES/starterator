@@ -267,13 +267,13 @@ class StarteratorEnterInformation(Gtk.Dialog):
             or Name like %s \n\
             or Name = %s", (phage + '-%', phage + '_%', phage))
         if len(results) < 1:
-            self.info['phamerated'] == False
+            self.info['phamerated'] = False
             return None
         else:
-            self.info['phamerated'] == True
+            self.info['phamerated'] = True
             return results[0][0]
 
-    def check_pham_number():
+    def check_pham_number(self):
         pass
 
     def update_starterator(self, label_text, progress_amount):
@@ -318,7 +318,7 @@ class StarteratorThread(threading.Thread):
             dialog = Gtk.MessageDialog(self.parent, 0, Gtk.MessageType.ERROR,
                                        Gtk.ButtonsType.CANCEL, "Startstaerator has encountered an error")
             dialog.format_secondary_text(
-                "Please try again. If problem persists \nplease post to seaphages.org Starterator forum.")
+                "Please try again. For more help \nsee the troubleshooting guide in the\nseaphages.org Starterator forum.")
             dialog.run()
             dialog.destroy()
             Gdk.threads_leave()
