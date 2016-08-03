@@ -316,7 +316,7 @@ class StarteratorThread(threading.Thread):
             self.stop = True
             Gdk.threads_enter()
             dialog = Gtk.MessageDialog(self.parent, 0, Gtk.MessageType.ERROR,
-                                       Gtk.ButtonsType.CANCEL, "Startstaerator has encountered an error")
+                                       Gtk.ButtonsType.CANCEL, "Starterator has encountered an error")
             dialog.format_secondary_text(
                 "Please try again. For more help \nsee the troubleshooting guide in the\nseaphages.org Starterator forum.")
             dialog.run()
