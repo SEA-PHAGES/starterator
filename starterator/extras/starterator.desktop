@@ -1,0 +1,11 @@
+[Desktop Entry]
+Encoding = UTF-8
+Name = Starterator
+Name[en_US] = Starterator
+Exec = /home/seafaculty/Applications/Starterator/starterator/starterator.sh
+Icon = /home/seafaculty/.starterator/starterator.svg
+Icon[en_US] = /home/pbi/.starterator/starterator.svg
+Type = Application
+Terminal = False
+Categories = Education
+
