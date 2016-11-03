@@ -13,6 +13,7 @@
 
 import cPickle
 import argparse
+import time
 from Bio.Graphics import GenomeDiagram
 from Bio.SeqFeature import SeqFeature, FeatureLocation
 from reportlab.lib import colors
@@ -81,25 +82,29 @@ def output_start_sites(stats):
         most_called_start = stats["most_called_start"]
         total_genes = len(stats["most_called"])+ len(stats["most_not_called"]) + len(stats["no_most_called"])
         output = []
-        output.append("Most Called Start: %s (number based on diagram)"
+        output.append('"Most Called" Start (combined computer predictions and manual annotations): %s (number based on diagram)'
                          % most_called_start)
+        output.append('"Most Annotated" Start (manual annotations only): code needed')
+        output.append('"Most Predicted" Start (computer predictions only): code needed')
+
         percent_with_most_called = (float(len(stats["most_called"])) 
                                     /total_genes *100 )
-        output.append("Percent with start called: %10.4f%%" 
+
+        output.append('Percent of genes that begin at the "Most Called" start: %10.1f%%'
                         % percent_with_most_called )
-        output.append("Genes that call the most called start:")
+        output.append('Genes that call the "Most Called" start:')
         s = u'\u2022' + ''
         for gene in stats["most_called"]:
             s += gene+ ", "
         output.append(s)
         output.append("")
-        output.append("Genes that have the most called start but do not call it:")
+        output.append('Genes that have the "Most Called" start but do not call it:')
         s = u'\u2022' + ''
         for gene in stats["most_not_called"]:
             s += gene + ", "
         output.append(s)
         output.append('')
-        output.append("Genes that do not have the most called start:")
+        output.append('Genes that do not have the "Most Called" start:')
         s = u'\u2022' + ""
         for gene in stats["no_most_called"]:
             s += gene + ", "
@@ -287,6 +292,18 @@ def make_pham_text(args, pham, pham_no, output_dir, only_pham=False):
     text = '<font size=14> Pham %s Report </font>' % pham_no
     story.append(Paragraph(text, styles['Center']))
     story.append(Spacer(1, 12))
+    currentDate = time.strftime("%x")
+    rundate = '<font size=12>This analysis was run %s. </font>' % currentDate
+    story.append(Paragraph(rundate, styles["Normal"]))
+    story.append(Spacer(1,12))
+    note = '<font size=12>Note: In the above figure, yellow indicates the location of called starts comprised solely of computational predictions, '
+    note += 'green indicates the location of called starts with at least 1 manual gene annotation. In the text below, numbers found inside '
+    note += 'square brackets (i.e. []) are derived from biopython and are zero-based, add 1 to the coordinate to find the corresponding location in a 1-based coordinate system. </font>'
+
+    story.append(Paragraph(note, styles["Normal"]))
+    story.append(Spacer(1,12))
+    story.append(Paragraph('Phages represented in each track:', styles["Normal"]))
+
     groups = pham.group_similar_genes()
     tracks_info = []
     for index in range(len(groups)):
@@ -305,6 +322,7 @@ def make_pham_text(args, pham, pham_no, output_dir, only_pham=False):
             text = '<font size=12> %s </font>' % line
             # if 'Genes' not in line or '':
             story.append(Paragraph(text, styles['Normal']))
+            story.append(Spacer(1, 12))
             # else:
             #     story.append(Paragraph(text, styles['Normal']))
         # story.append()
