@@ -232,7 +232,7 @@ class Pham(object):
         most_called_start_index = self.total_possible_starts.index(called_starts_count[0][0])+1
         if len(self.total_possible_starts) > 0: #i.e. at least 1 annotated gene
             most_annot_start_index = self.total_possible_starts.index(annot_starts_count[0][0])+1
-        else
+        else:
             most_annot_start_index = None
 
         genes_start_most_called = start_stats["called_starts"][most_called_start_index]
