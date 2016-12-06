@@ -345,12 +345,13 @@ def make_pham_text(args, pham, pham_no, output_dir, only_pham=False):
         start_stats["phamCount"] = phamCount
         start_stats["annotCount"] = annotCount
         start_stats["draftCount"] = draftCount
-        output = output_start_sites(start_stats)
-        for line in output:
-            if line == '':
-                story.append(Spacer(1, 12))
-            text = '<font size=12> %s </font>' % line
-            # if 'Genes' not in line or '':
+        if annotCount > 0:
+            output = output_start_sites(start_stats)
+            for line in output:
+                if line == '':
+                    story.append(Spacer(1, 12))
+                text = '<font size=12> %s </font>' % line
+                # if 'Genes' not in line or '':
             story.append(Paragraph(text, styles['Normal']))
             story.append(Spacer(1, 12))
     else:
