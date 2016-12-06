@@ -88,41 +88,42 @@ def output_start_sites(stats):
         output = []
         output.append("")
 
-        annotated_with_most_annotated_called = \
-            [g.gene_id for g in stats["annot_list"] if g.gene_id in stats["called_starts"][most_annotated_start] ]
-        annotated_with_most_predicted_called = \
-            [g.gene_id for g in stats["draft_list"] if g.gene_id in stats["called_starts"][most_called_start] ]
+        if annotatedCount > 0:
+            annotated_with_most_annotated_called = \
+                [g.gene_id for g in stats["annot_list"] if g.gene_id in stats["called_starts"][most_annotated_start] ]
+            annotated_with_most_predicted_called = \
+                [g.gene_id for g in stats["draft_list"] if g.gene_id in stats["called_starts"][most_called_start] ]
 
-        output.append('Summary of Final Annotations (Info on gene starts based on numbers in diagram):')
+            output.append('Summary of Final Annotations (Info on gene starts based on numbers in diagram):')
 
-        output.append('The start number called the most often in the published annotations is start number %s, it was called in %s of the %s non-draft genes in the pham.'
-                      % (str(most_annotated_start), str(len(annotated_with_most_annotated_called)), str(annotatedCount)))
+            output.append('The start number called the most often in the published annotations is start number %s, it was called in %s of the %s non-draft genes in the pham.'
+                          % (str(most_annotated_start), str(len(annotated_with_most_annotated_called)), str(annotatedCount)))
 
-        # output.append('Called info: "Most Called" Start is %s, called in %s of all %s genes in the pham.'
-        #               % (str(stats["most_called_start"]), str(calledCount), str(total_genes)))
-        # percent_with_most_annotated = (float(len(stats["most_called"]))
-        #                             /total_genes *100 )
-        #
-        # output.append('Percent of genes that begin at the "Most Annotated" start: %10.1f%%'
-        #                 % percent_with_most_called )
-        output.append('Genes that call this "Most Annotated" start:')
-        s = u'\u2022' + ' '
-        for gene in stats["called_starts"][most_annotated_start]:
-            s += gene+ ", "
-        output.append(s)
-        output.append("")
-        output.append('Genes that have the "Most Annotated" start but do not call it:')
-        s = u'\u2022' + ' '
-        for gene in stats["most_not_annotated"]:
-            s += gene + ", "
-        output.append(s)
-        output.append('')
-        output.append('Genes that do not have the "Most Annotated" start:')
-        s = u'\u2022' + ""
-        for gene in stats["no_most_annot"]:
-            s += gene + ", "
-        output.append(s + '')
-        output.append('')
+            # output.append('Called info: "Most Called" Start is %s, called in %s of all %s genes in the pham.'
+            #               % (str(stats["most_called_start"]), str(calledCount), str(total_genes)))
+            # percent_with_most_annotated = (float(len(stats["most_called"]))
+            #                             /total_genes *100 )
+            #
+            # output.append('Percent of genes that begin at the "Most Annotated" start: %10.1f%%'
+            #                 % percent_with_most_called )
+            output.append('Genes that call this "Most Annotated" start:')
+            s = u'\u2022' + ' '
+            for gene in stats["called_starts"][most_annotated_start]:
+                s += gene+ ", "
+            output.append(s)
+            output.append("")
+            output.append('Genes that have the "Most Annotated" start but do not call it:')
+            s = u'\u2022' + ' '
+            for gene in stats["most_not_annotated"]:
+                s += gene + ", "
+            output.append(s)
+            output.append('')
+            output.append('Genes that do not have the "Most Annotated" start:')
+            s = u'\u2022' + ""
+            for gene in stats["no_most_annot"]:
+                s += gene + ", "
+            output.append(s + '')
+            output.append('')
         output.append("Summary by start number:")
         for start, genes in stats["called_starts"].items():
             if len(genes) == 0:
