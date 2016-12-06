@@ -230,13 +230,20 @@ class Pham(object):
         predicted_starts_count = all_predicted_count.most_common()
 
         most_called_start_index = self.total_possible_starts.index(called_starts_count[0][0])+1
-        most_annot_start_index = self.total_possible_starts.index(annot_starts_count[0][0])+1
+        if len(self.total_possible_starts) > 0: #i.e. at least 1 annotated gene
+            most_annot_start_index = self.total_possible_starts.index(annot_starts_count[0][0])+1
+        else
+            most_annot_start_index = None
 
         genes_start_most_called = start_stats["called_starts"][most_called_start_index]
-        genes_start_most_annot = start_stats["called_starts"][most_annot_start_index]
-
         start_stats["most_called_start"] = most_called_start_index
+
         start_stats["most_annotated_start"] = most_annot_start_index
+        if most_annot_start_index:
+            genes_start_most_annot = start_stats["called_starts"][most_annot_start_index]
+        else:
+            genes_start_most_annot = None
+
         # start_stats["most_called"] = start_stats["called_starts"][most_called_start_index]
         start_stats["most_called"] = []
         start_stats["most_not_called"] = []
