@@ -87,7 +87,7 @@ def output_start_sites(stats):
         calledCount = len(stats["called_starts"][most_called_start])
         output = []
         output.append("")
-
+        #start section on summary of annotations:
         if annotatedCount > 0:
             annotated_with_most_annotated_called = \
                 [g.gene_id for g in stats["annot_list"] if g.gene_id in stats["called_starts"][most_annotated_start] ]
@@ -98,6 +98,7 @@ def output_start_sites(stats):
 
             output.append('The start number called the most often in the published annotations is start number %s, it was called in %s of the %s non-draft genes in the pham.'
                           % (str(most_annotated_start), str(len(annotated_with_most_annotated_called)), str(annotatedCount)))
+
 
             # output.append('Called info: "Most Called" Start is %s, called in %s of all %s genes in the pham.'
             #               % (str(stats["most_called_start"]), str(calledCount), str(total_genes)))
@@ -124,6 +125,10 @@ def output_start_sites(stats):
                 s += gene + ", "
             output.append(s + '')
             output.append('')
+        else:
+            output.append("This pham is comprised of all draft annotations. There is no annotations to summarize.")
+
+        #start section summary of start sites by number
         output.append("Summary by start number:")
         for start, genes in stats["called_starts"].items():
             if len(genes) == 0:
@@ -135,6 +140,8 @@ def output_start_sites(stats):
             output.append(u'\u2022' + " Start number " + str(start) + " is called in:\t" + s +'')
             percent = float(len(genes)) / total_genes * 100
             output.append("Percent with start %s called: %10.1f%% \n\t" % (str(start), percent))
+            output.append('')
+
         return output
 
 def add_pham_no_title(args, pham_no, first_graph_path, i=""):
