@@ -143,6 +143,26 @@ def output_start_sites(stats):
             output.append("Percent with start %s called: %10.1f%% \n\t" % (str(start), percent))
             output.append('')
 
+        gene_list = stats['annot_list'] + stats['draft_list']
+        gene_list.sort(key=lambda x: x.phage_name)
+        output.append("Summary by phage:")
+
+        for gene in gene_list:
+            gene_name = gene.gene_id
+            phage_name = gene.phage_id
+            if gene.draftStatus:
+                annotated = "not been"
+            else:
+                annotated = "been"
+
+            text = "Gene %s has %s annotated. Start sites present in this gene are starts:" % (gene_name, annotated)
+            output.append(text)
+
+            listedStarts = ""
+            for key, list in stats["possible"].items():
+                print("key %s, list %s" % (key, list))
+
+        print('done with output_start_sites')
         return output
 
 def add_pham_no_title(args, pham_no, first_graph_path, i=""):
