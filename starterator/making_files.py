@@ -161,6 +161,13 @@ def output_start_sites(stats):
             listedStarts = ""
             for key, list in stats["possible"].items():
                 print("key %s, list %s" % (key, list))
+                if gene_name in list:
+                    listedStarts += str(key)
+                    listedStarts += ", "
+            output.append(listedStarts)
+
+
+
 
         print('done with output_start_sites')
         return output
