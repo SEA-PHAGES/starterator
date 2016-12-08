@@ -166,10 +166,6 @@ def output_start_sites(stats):
                     listedStarts += ", "
             output.append(listedStarts)
 
-
-
-
-        print('done with output_start_sites')
         return output
 
 def add_pham_no_title(args, pham_no, first_graph_path, i=""):
