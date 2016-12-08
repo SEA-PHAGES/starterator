@@ -87,14 +87,15 @@ def output_start_sites(stats):
         calledCount = len(stats["called_starts"][most_called_start])
         output = []
         output.append("")
+
         #start section on summary of annotations:
+        output.append('Summary of Final Annotations (Info on gene starts based on numbers in diagram):')
+
         if annotatedCount > 0:
             annotated_with_most_annotated_called = \
                 [g.gene_id for g in stats["annot_list"] if g.gene_id in stats["called_starts"][most_annotated_start] ]
             annotated_with_most_predicted_called = \
                 [g.gene_id for g in stats["draft_list"] if g.gene_id in stats["called_starts"][most_called_start] ]
-
-            output.append('Summary of Final Annotations (Info on gene starts based on numbers in diagram):')
 
             output.append('The start number called the most often in the published annotations is start number %s, it was called in %s of the %s non-draft genes in the pham.'
                           % (str(most_annotated_start), str(len(annotated_with_most_annotated_called)), str(annotatedCount)))
@@ -126,7 +127,7 @@ def output_start_sites(stats):
             output.append(s + '')
             output.append('')
         else:
-            output.append("This pham is comprised of all draft annotations. There is no annotations to summarize.")
+            output.append("This pham is comprised of all draft annotations. There are no annotations to summarize.")
 
         #start section summary of start sites by number
         output.append("Summary by start number:")
