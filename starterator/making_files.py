@@ -143,8 +143,6 @@ def output_start_sites(stats):
             output.append("Percent with start %s called: %10.1f%% \n\t" % (str(start), percent))
             output.append('')
 
-            output.append(listedStarts)
-
         return output
 
 def add_pham_no_title(args, pham_no, first_graph_path, i=""):
@@ -322,14 +320,6 @@ def make_pham_text(args, pham, pham_no, output_dir, only_pham=False):
     story.append(Paragraph(note, styles["Normal"]))
     story.append(Spacer(1, 12))
 
-    note = '<font size=12>In addition, in the summaries below, any base coordinates found within square brackets are based on '
-    note += 'the zero-based half-open coordinate system used by Biopython. Start coordinates may be off by one base '
-    note += 'as compared to the typical one-based fully closed coordinate system. If you find base errors larger than '
-    note += 'one base please report the phage and gene number with the error to the starterator forum at seaphages.org.</font>'
-
-    story.append(Paragraph(note, styles["Normal"]))
-    story.append(Spacer(1, 12))
-
     text = '<font size=14> Pham %s Report </font>' % pham_no
     story.append(Paragraph(text, styles['Center']))
     story.append(Spacer(1, 12))
@@ -377,18 +367,24 @@ def make_pham_text(args, pham, pham_no, output_dir, only_pham=False):
         story.append(Paragraph("<font size=12>Gene Information:</font>", styles["Normal"]))
         pham_possible_starts = pham.total_possible_starts
 
-        for gene in pham.genes.values():
-            if args.phage in gene.gene_id:
-                candidate_starts = []
-                for start in gene.alignment_candidate_starts:
-                    candidate_starts.append((pham_possible_starts.index(start)+1, gene.alignment_index_to_coord(start)+1))
-                if gene.orientation == "R":
-                    story.append(Paragraph("<font size = 12> Gene: %s \n Start: %s, Stop: %s </font>" % (gene.gene_id, gene.start, gene.stop+1), styles["Normal"]))
+        genelist=pham.genes.values()
+        genelist.sort(key=lambda x: x.phage_name)
+        for gene in genelist:
+            candidate_starts = []
+            for start in gene.alignment_candidate_starts:
+                if gene.orientation == 'F':
+                    candidate_starts.append((pham_possible_starts.index(start)+1, gene.alignment_index_to_coord(start)))
                 else:
-                    story.append(Paragraph("<font size = 12> Gene: %s \n Start: %s, Stop: %s </font>" % (gene.gene_id, gene.start+1, gene.stop), styles["Normal"]))
-                story.append(Paragraph("<font size = 12> Candidate Starts for %s: </font>" % (gene.gene_id), styles["Normal"]))
-                story.append(Paragraph("<font size = 12>"+ str(candidate_starts) + "</font>" , styles["Normal"]))
+                    candidate_starts.append(
+                        (pham_possible_starts.index(start) + 1, gene.alignment_index_to_coord(start) + 1))
 
+            if gene.orientation == "R":
+                story.append(Paragraph("<font size = 12> Gene: %s \n Start: %s, Stop: %s </font>" % (gene.gene_id, gene.start, gene.stop+1), styles["Normal"]))
+            else:
+                story.append(Paragraph("<font size = 12> Gene: %s \n Start: %s, Stop: %s </font>" % (gene.gene_id, gene.start+1, gene.stop), styles["Normal"]))
+            story.append(Paragraph("<font size = 12> Candidate Starts for %s: </font>" % (gene.gene_id), styles["Normal"]))
+            story.append(Paragraph("<font size = 12>     "+ str(candidate_starts) + "</font>" , styles["Normal"]))
+            story.append(Spacer(1,12))
 
     doc.build(story)
 
