@@ -339,8 +339,12 @@ def make_pham_text(args, pham, pham_no, output_dir, only_pham=False):
 
     note = '<font size=12>Note: In the above figure, yellow indicates the location of called starts comprised solely of '
     note += 'computational predictions (i.e. auto-annotations by Glimmer/GeneMark), '
-    note += 'green indicates the location of called starts with at least 1 manual gene annotation.'
-    note += 'In addition, in the summaries below, any base coordinates found withing square brackets are based on '
+    note += 'green indicates the location of called starts with at least 1 manual gene annotation. '
+
+    story.append(Paragraph(note, styles["Normal"]))
+    story.append(Spacer(1, 12))
+
+    note = 'In addition, in the summaries below, any base coordinates found withing square brackets are based on '
     note += 'the zero-based half-open coordinate system used by Biopython. Start coordinates may be off by one base'
     note += 'when comparing to the typical one-based fully closed coordinate system. If you find base errors larger than'
     note += 'one base please report the phage and gene number with the error to the starterator forum at seaphages.org'
