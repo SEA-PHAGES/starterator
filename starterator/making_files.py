@@ -143,28 +143,6 @@ def output_start_sites(stats):
             output.append("Percent with start %s called: %10.1f%% \n\t" % (str(start), percent))
             output.append('')
 
-        #start section with summary by phage
-        gene_list = stats['annot_list'] + stats['draft_list']
-        gene_list.sort(key=lambda x: x.phage_name)
-        output.append("Summary by phage:")
-
-        for gene in gene_list:
-            gene_name = gene.gene_id
-            phage_name = gene.phage_id
-            if gene.draftStatus:
-                annotated = "not been"
-            else:
-                annotated = "been"
-
-            text = "Gene %s has %s annotated. Start sites present in this gene are starts:" % (gene_name, annotated)
-            output.append(text)
-
-            listedStarts = ""
-            for key, list in stats["possible"].items():
-                print("key %s, list %s" % (key, list))
-                if gene_name in list:
-                    listedStarts += str(key)
-                    listedStarts += ", "
             output.append(listedStarts)
 
         return output
@@ -339,15 +317,15 @@ def make_pham_text(args, pham, pham_no, output_dir, only_pham=False):
 
     note = '<font size=12>Note: In the above figure, yellow indicates the location of called starts comprised solely of '
     note += 'computational predictions (i.e. auto-annotations by Glimmer/GeneMark), '
-    note += 'green indicates the location of called starts with at least 1 manual gene annotation. '
+    note += 'green indicates the location of called starts with at least 1 manual gene annotation. </font>'
 
     story.append(Paragraph(note, styles["Normal"]))
     story.append(Spacer(1, 12))
 
-    note = 'In addition, in the summaries below, any base coordinates found withing square brackets are based on '
-    note += 'the zero-based half-open coordinate system used by Biopython. Start coordinates may be off by one base'
-    note += 'when comparing to the typical one-based fully closed coordinate system. If you find base errors larger than'
-    note += 'one base please report the phage and gene number with the error to the starterator forum at seaphages.org'
+    note = '<font size=12>In addition, in the summaries below, any base coordinates found within square brackets are based on '
+    note += 'the zero-based half-open coordinate system used by Biopython. Start coordinates may be off by one base '
+    note += 'as compared to the typical one-based fully closed coordinate system. If you find base errors larger than '
+    note += 'one base please report the phage and gene number with the error to the starterator forum at seaphages.org.</font>'
 
     story.append(Paragraph(note, styles["Normal"]))
     story.append(Spacer(1, 12))
@@ -394,10 +372,11 @@ def make_pham_text(args, pham, pham_no, output_dir, only_pham=False):
             # if 'Genes' not in line or '':
             story.append(Paragraph(text, styles['Normal']))
             story.append(Spacer(1, 12))
-    else:
+    #else:
         story.append(Paragraph("",styles["Normal"]))
         story.append(Paragraph("<font size=12>Gene Information:</font>", styles["Normal"]))
         pham_possible_starts = pham.total_possible_starts
+
         for gene in pham.genes.values():
             if args.phage in gene.gene_id:
                 candidate_starts = []
