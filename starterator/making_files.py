@@ -362,7 +362,7 @@ def make_pham_text(args, pham, pham_no, output_dir, only_pham=False):
             # if 'Genes' not in line or '':
             story.append(Paragraph(text, styles['Normal']))
             story.append(Spacer(1, 12))
-    #else:
+
         story.append(Paragraph("",styles["Normal"]))
         story.append(Paragraph("<font size=12>Gene Information:</font>", styles["Normal"]))
         pham_possible_starts = pham.total_possible_starts
